@@ -2,8 +2,6 @@
 
 A highly interactive, modern, and visually striking personal portfolio website for **Anik Das**. Built to showcase skills, projects, certifications, and GitHub activity dynamically.
 
-![Portfolio Preview](./portfolio_preview.webp) <!-- You can add a real screenshot here if you'd like -->
-
 ## 🌟 Live Demo
 
 The portfolio is deployed and live at:
