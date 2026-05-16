@@ -471,29 +471,38 @@
                 // --- Skills & Proficiencies ---
                 sectionHeader('TECHNICAL PROFICIENCIES');
                 doc.setFont('helvetica', 'bold');
-                doc.text('Frontend Development: ', 20, y);
+                doc.text('Frontend Development:', 20, y);
+                y += 5;
                 doc.setFont('helvetica', 'normal');
-                doc.text('HTML5, CSS3 (Flexbox, Grid), JavaScript (ES6+, DOM Manipulation)', 20 + doc.getTextWidth('Frontend Development: '), y);
-                y += 6;
+                doc.text('HTML5, CSS3 (Flexbox, Grid), JavaScript (ES6+, DOM Manipulation)', 22, y);
+                y += 7;
+                
                 doc.setFont('helvetica', 'bold');
-                doc.text('Frameworks & Libraries: ', 20, y);
+                doc.text('Frameworks & Libraries:', 20, y);
+                y += 5;
                 doc.setFont('helvetica', 'normal');
-                doc.text('React.js (Basics), Bootstrap, Tailwind CSS, FontAwesome', 20 + doc.getTextWidth('Frameworks & Libraries: '), y);
-                y += 6;
+                doc.text('React.js (Basics), Bootstrap, Tailwind CSS, FontAwesome', 22, y);
+                y += 7;
+
                 doc.setFont('helvetica', 'bold');
-                doc.text('Backend & Cloud: ', 20, y);
+                doc.text('Backend & Cloud:', 20, y);
+                y += 5;
                 doc.setFont('helvetica', 'normal');
-                doc.text('Firebase (Authentication, Realtime Database, Hosting), Node.js (Basics)', 20 + doc.getTextWidth('Backend & Cloud: '), y);
-                y += 6;
+                doc.text('Firebase (Authentication, Realtime Database, Hosting), Node.js (Basics)', 22, y);
+                y += 7;
+
                 doc.setFont('helvetica', 'bold');
-                doc.text('AI & Machine Learning: ', 20, y);
+                doc.text('AI & Machine Learning:', 20, y);
+                y += 5;
                 doc.setFont('helvetica', 'normal');
-                doc.text('Python (NumPy, Pandas, Scikit-learn), Prompt Engineering, API Integration', 20 + doc.getTextWidth('AI & Machine Learning: '), y);
-                y += 6;
+                doc.text('Python (NumPy, Pandas, Scikit-learn), Prompt Engineering, API Integration', 22, y);
+                y += 7;
+
                 doc.setFont('helvetica', 'bold');
-                doc.text('Tools & Version Control: ', 20, y);
+                doc.text('Tools & Version Control:', 20, y);
+                y += 5;
                 doc.setFont('helvetica', 'normal');
-                doc.text('Git, GitHub, VS Code, Postman, Vercel, Netlify', 20 + doc.getTextWidth('Tools & Version Control: '), y);
+                doc.text('Git, GitHub, VS Code, Postman, Vercel, Netlify', 22, y);
                 y += 10;
 
                 // --- Core Competencies ---
@@ -529,21 +538,25 @@
                 const certCards = document.querySelectorAll('.cert-card');
                 if (certCards.length > 0) {
                     certCards.forEach(cert => {
-                        if (y > 275) { doc.addPage(); y = 20; }
+                        if (y > 270) { doc.addPage(); y = 20; }
                         const title = cert.querySelector('h3')?.textContent || '';
                         const issuer = cert.querySelector('p')?.textContent || '';
                         const date = cert.querySelector('.cert-date')?.textContent || '';
+                        
                         doc.setFont('helvetica', 'bold');
                         doc.text('• ' + title, 20, y);
+                        y += 5;
                         doc.setFont('helvetica', 'normal');
-                        doc.text(' | ' + issuer + ' (' + date + ')', 20 + doc.getTextWidth('• ' + title), y);
-                        y += 6;
+                        doc.setTextColor(100);
+                        doc.text('  ' + issuer + ' | ' + date, 22, y);
+                        doc.setTextColor(50);
+                        y += 7;
                     });
                 } else {
                     doc.text('Actively pursuing certifications in web development and AI.', 20, y);
-                    y += 6;
+                    y += 7;
                 }
-                y += 6;
+                y += 4;
 
                 // --- Soft Skills ---
                 sectionHeader('SOFT SKILLS');
