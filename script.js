@@ -306,7 +306,6 @@ const resumeBtn = document.getElementById('generate-resume');
 if (resumeBtn) {
     resumeBtn.addEventListener('click', () => {
         const element = document.getElementById('resume-template');
-        element.style.display = 'block'; // Temporarily show to capture
         
         const opt = {
             margin: [0.5, 0.5],
@@ -317,9 +316,7 @@ if (resumeBtn) {
         };
 
         // Generate and download
-        html2pdf().set(opt).from(element).save().then(() => {
-            element.style.display = 'none'; // Hide again
-        });
+        html2pdf().set(opt).from(element).save();
     });
 }
 
