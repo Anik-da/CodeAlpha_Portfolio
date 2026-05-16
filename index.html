@@ -25,10 +25,10 @@
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
-        <a href="#" class="nav-logo">
-            <div class="logo-box">AD</div>
+        <div class="nav-logo">
+            <div class="logo-box" id="admin-trigger">AD</div>
             <span class="logo-text">Anik<span class="logo-last">Das</span></span>
-        </a>
+        </div>
         <div class="nav-menu" id="nav-menu">
             <a href="#hero" class="nav-link active" data-section="hero">Home</a>
             <a href="#about" class="nav-link" data-section="about">About</a>
@@ -364,6 +364,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyADkVvQ3Y5hCR3c870wOIyWK9fmSyxbZEs",
@@ -372,11 +373,113 @@
             storageBucket: "codealpha-portfolio.firebasestorage.app",
             messagingSenderId: "339948897880",
             appId: "1:339948897880:web:af8c131db8c286b3ccec2d",
-            measurementId: "G-PGBTPF46MP"
+            measurementId: "G-PGBTPF46MP",
+            databaseURL: "https://codealpha-portfolio-default-rtdb.firebaseio.com"
         };
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const db = getDatabase(app);
+
+        // Contact Form Submission to Realtime Database
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = this.querySelector('button[type="submit"]');
+                const original = btn.innerHTML;
+
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value,
+                    timestamp: new Date().toISOString()
+                };
+
+                const messagesRef = ref(db, 'messages');
+                const newMessageRef = push(messagesRef);
+                set(newMessageRef, formData).then(() => {
+                    btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                    btn.style.background = 'linear-gradient(135deg, #10b981, #06b6d4)';
+                    setTimeout(() => {
+                        btn.innerHTML = original;
+                        btn.style.background = '';
+                        contactForm.reset();
+                    }, 3000);
+                }).catch(err => {
+                    console.error("Firebase Error:", err);
+                    alert("Failed to send message. Please try again.");
+                });
+            });
+        }
+
+        // Admin Portal Logic
+        const trigger = document.getElementById('admin-trigger');
+        if (trigger) {
+            trigger.addEventListener('click', () => {
+                const email = prompt("Admin Access Required\nEnter your email:");
+                if (email === "anikda9945@gmail.com") {
+                    showAdminPortal();
+                } else if (email) {
+                    alert("Unauthorized Access.");
+                }
+            });
+        }
+
+        function showAdminPortal() {
+            // Create a simple full-screen overlay for reading messages
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position:fixed; top:0; left:0; width:100%; height:100%; 
+                background:rgba(10,10,15,0.98); backdrop-filter:blur(20px); 
+                z-index:99999; padding:40px; overflow-y:auto; color:white;
+            `;
+            
+            overlay.innerHTML = `
+                <div style="max-width:800px; margin:0 auto;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                        <h2 style="color:var(--accent);">Admin Inbox</h2>
+                        <button id="close-admin" class="btn btn-outline" style="cursor:pointer; padding:8px 16px;">Close</button>
+                    </div>
+                    <div id="messages-list">Loading messages...</div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.getElementById('close-admin').onclick = () => overlay.remove();
+
+            const messagesRef = ref(db, 'messages');
+            onValue(messagesRef, (snapshot) => {
+                const data = snapshot.val();
+                const list = document.getElementById('messages-list');
+                list.innerHTML = '';
+                
+                if (!data) {
+                    list.innerHTML = '<p>No messages yet.</p>';
+                    return;
+                }
+
+                Object.keys(data).reverse().forEach(key => {
+                    const msg = data[key];
+                    const card = document.createElement('div');
+                    card.style.cssText = `
+                        background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+                        padding:20px; border-radius:12px; margin-bottom:16px;
+                    `;
+                    card.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--accent2); margin-bottom:8px;">
+                            <span>${new Date(msg.timestamp).toLocaleString()}</span>
+                            <span>${msg.email}</span>
+                        </div>
+                        <h4 style="margin-bottom:4px;">${msg.name}: ${msg.subject}</h4>
+                        <p style="color:#a1a1aa; font-size:0.9rem;">${msg.message}</p>
+                        <a href="mailto:${msg.email}" style="display:inline-block; margin-top:12px; color:var(--accent); font-size:0.8rem; border-bottom:1px solid var(--accent);">Reply via Email</a>
+                    `;
+                    list.appendChild(card);
+                });
+            });
+        }
     </script>
 
     <script src="script.js"></script>
