@@ -301,6 +301,28 @@ function initFiltering() {
 // Call the fetch function on load
 document.addEventListener('DOMContentLoaded', fetchGitHubProjects);
 
+/* ===== RESUME GENERATION ===== */
+const resumeBtn = document.getElementById('generate-resume');
+if (resumeBtn) {
+    resumeBtn.addEventListener('click', () => {
+        const element = document.getElementById('resume-template');
+        element.style.display = 'block'; // Temporarily show to capture
+        
+        const opt = {
+            margin: [0.5, 0.5],
+            filename: 'Anik_Das_Resume.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // Generate and download
+        html2pdf().set(opt).from(element).save().then(() => {
+            element.style.display = 'none'; // Hide again
+        });
+    });
+}
+
 /* ===== CONTACT FORM ===== */
 document.getElementById('contact-form').addEventListener('submit', function (e) {
     e.preventDefault();

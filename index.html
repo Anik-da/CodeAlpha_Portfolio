@@ -13,6 +13,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
@@ -273,12 +274,44 @@
                     <h2>Want to know more?</h2>
                     <p>Download my resume to see my full experience, education, and achievements.</p>
                 </div>
-                <a href="resume.pdf" class="btn btn-primary btn-large" download="Anik_Das_Resume.pdf">
+                <button id="generate-resume" class="btn btn-primary btn-large">
                     <i class="fas fa-download"></i> Download Resume
-                </a>
+                </button>
             </div>
         </div>
     </section>
+
+    <!-- Hidden Resume Template for PDF Generation -->
+    <div id="resume-template" style="display:none;">
+        <div style="padding:40px; font-family:'Inter', sans-serif; color:#333; background:#fff; line-height:1.5;">
+            <div style="text-align:center; border-bottom:2px solid #a855f7; padding-bottom:20px; margin-bottom:20px;">
+                <h1 style="font-family:'Orbitron', sans-serif; margin:0; color:#000;">ANIK DAS</h1>
+                <p style="margin:5px 0; color:#666;">Frontend Developer | BE-CSE (AI & ML)</p>
+                <p style="font-size:0.9rem; color:#888;">Bengaluru, India | anikda9945@gmail.com</p>
+            </div>
+            
+            <div style="margin-bottom:20px;">
+                <h3 style="font-family:'Orbitron', sans-serif; color:#a855f7; border-bottom:1px solid #eee; padding-bottom:5px;">OBJECTIVE</h3>
+                <p>Passionate Frontend Developer and AI Enthusiast pursuing BE-CSE (AI & ML) at Sapthagiri NPS University. Dedicated to creating modern web applications powered by cutting-edge technology.</p>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <h3 style="font-family:'Orbitron', sans-serif; color:#a855f7; border-bottom:1px solid #eee; padding-bottom:5px;">SKILLS</h3>
+                <p><strong>Languages:</strong> HTML5, CSS3, JavaScript (ES6+), Python</p>
+                <p><strong>Tools & Tech:</strong> Firebase, Git/GitHub, AI/ML Integrations, Responsive Design</p>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <h3 style="font-family:'Orbitron', sans-serif; color:#a855f7; border-bottom:1px solid #eee; padding-bottom:5px;">EDUCATION</h3>
+                <p><strong>BE-CSE (AI & ML)</strong> - Sapthagiri NPS University, Bengaluru</p>
+            </div>
+
+            <div>
+                <h3 style="font-family:'Orbitron', sans-serif; color:#a855f7; border-bottom:1px solid #eee; padding-bottom:5px;">PROJECTS</h3>
+                <p>Check out my latest work at <span style="color:#a855f7;">codealpha-portfolio.web.app</span> or my GitHub <span style="color:#a855f7;">github.com/Anik-da</span></p>
+            </div>
+        </div>
+    </div>
 
     <!-- Contact Section -->
     <section class="section contact" id="contact">
