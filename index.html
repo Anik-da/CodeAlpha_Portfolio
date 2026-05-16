@@ -467,34 +467,58 @@
                 doc.text(obj, 20, y);
                 y += obj.length * 5 + 8;
 
-                // --- Skills ---
-                sectionHeader('SKILLS');
+                // --- Skills & Proficiencies ---
+                sectionHeader('TECHNICAL PROFICIENCIES');
                 doc.setFont('helvetica', 'bold');
-                doc.text('Languages: ', 20, y);
+                doc.text('Frontend Stack: ', 20, y);
                 doc.setFont('helvetica', 'normal');
-                doc.text('HTML5, CSS3, JavaScript (ES6+), Python', 20 + doc.getTextWidth('Languages: '), y);
+                doc.text('HTML5, CSS3, JavaScript (ES6+), Modern UI Patterns', 20 + doc.getTextWidth('Frontend Stack: '), y);
                 y += 6;
                 doc.setFont('helvetica', 'bold');
-                doc.text('Frameworks & Tools: ', 20, y);
+                doc.text('Frameworks & Cloud: ', 20, y);
                 doc.setFont('helvetica', 'normal');
-                doc.text('Firebase, Git/GitHub, REST APIs, Responsive Design', 20 + doc.getTextWidth('Frameworks & Tools: '), y);
+                doc.text('Firebase (Realtime DB, Hosting), RESTful API Integration', 20 + doc.getTextWidth('Frameworks & Cloud: '), y);
                 y += 6;
                 doc.setFont('helvetica', 'bold');
-                doc.text('Interests: ', 20, y);
+                doc.text('Programming: ', 20, y);
                 doc.setFont('helvetica', 'normal');
-                doc.text('AI/ML, Web Development, Open Source, UI/UX Design', 20 + doc.getTextWidth('Interests: '), y);
-                y += 12;
+                doc.text('Python (AI/ML focused), Core Java, Algorithm Development', 20 + doc.getTextWidth('Programming: '), y);
+                y += 6;
+                doc.setFont('helvetica', 'bold');
+                doc.text('Design & Tools: ', 20, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text('Git/GitHub, Responsive Web Design, UI/UX Design, Canva', 20 + doc.getTextWidth('Design & Tools: '), y);
+                y += 10;
 
                 // --- Education ---
                 sectionHeader('EDUCATION');
                 doc.setFont('helvetica', 'bold');
-                doc.text('BE - Computer Science & Engineering (AI & ML)', 20, y);
+                doc.text('Bachelor of Engineering - Computer Science (AI & ML)', 20, y);
                 y += 5;
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(100);
                 doc.text('Sapthagiri NPS University, Bengaluru', 20, y);
-                y += 12;
                 doc.setTextColor(50);
+                y += 10;
+
+                // --- Certifications ---
+                sectionHeader('CERTIFICATIONS & INTERNSHIPS');
+                const certCards = document.querySelectorAll('.cert-card');
+                if (certCards.length > 0) {
+                    certCards.forEach(cert => {
+                        if (y > 270) { doc.addPage(); y = 20; }
+                        const title = cert.querySelector('h3')?.textContent || '';
+                        const issuer = cert.querySelector('p')?.textContent || '';
+                        const date = cert.querySelector('.cert-date')?.textContent || '';
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('• ' + title, 20, y);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(' | ' + issuer + ' (' + date + ')', 20 + doc.getTextWidth('• ' + title), y);
+                        y += 6;
+                    });
+                }
+                y += 4;
+
 
                 // --- Projects (dynamic from GitHub) ---
                 sectionHeader('PROJECTS');
