@@ -244,6 +244,15 @@ async function fetchGitHubProjects() {
             if (repo.name.toLowerCase().includes('maintenance')) icon = 'fas fa-city';
             if (repo.name.toLowerCase().includes('vote')) icon = 'fas fa-vote-yea';
 
+            // Fallback URLs for known projects if GitHub homepage is empty
+            const fallbackLinks = {
+                'CodeAlpha_Calculator': 'https://codealpha-calculator.web.app',
+                'CodeAlpha_Image_Gallery': 'https://codealpha-image-gallery.web.app',
+                'SmartVote-India': 'https://election-262a7.web.app',
+                'smart-civic-maintenance': 'https://smart-civic-maintenance.web.app'
+            };
+            const liveUrl = repo.homepage || fallbackLinks[repo.name];
+
             card.innerHTML = `
                 <div class="project-image">
                     <div class="project-img-placeholder"><i class="${icon}"></i></div>
@@ -254,7 +263,7 @@ async function fetchGitHubProjects() {
                     <p>${repo.description || 'Modern project built with clean code and best practices.'}</p>
                     <div class="project-links">
                         <a href="${repo.html_url}" target="_blank" class="project-link"><i class="fab fa-github"></i> Code</a>
-                        ${repo.homepage ? `<a href="${repo.homepage}" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live</a>` : ''}
+                        ${liveUrl ? `<a href="${liveUrl}" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live</a>` : ''}
                     </div>
                 </div>
             `;
