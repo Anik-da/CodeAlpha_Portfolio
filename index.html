@@ -364,7 +364,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyADkVvQ3Y5hCR3c870wOIyWK9fmSyxbZEs",
@@ -483,13 +483,26 @@
                         </div>
                         <h4 style="margin-bottom:4px;">${msg.name}: ${msg.subject}</h4>
                         <p style="color:#a1a1aa; font-size:0.9rem;">${msg.message}</p>
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${msg.email}&su=Re: ${msg.subject}" target="_blank" style="display:inline-block; margin-top:12px; color:var(--accent); font-size:0.8rem; border-bottom:1px solid var(--accent);">Reply via Gmail</a>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${msg.email}&su=Re: ${msg.subject}" target="_blank" style="display:inline-block; color:var(--accent); font-size:0.8rem; border-bottom:1px solid var(--accent);">Reply via Gmail</a>
+                            <button class="delete-msg" data-key="${key}" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.9rem; padding:4px;" title="Delete Message"><i class="fas fa-trash-alt"></i></button>
+                        </div>
                     `;
                     list.appendChild(card);
                     
-                    // Add hover to new link
+                    // Add hover effects
                     card.querySelector('a').addEventListener('mouseenter', () => follower.classList.add('hover'));
                     card.querySelector('a').addEventListener('mouseleave', () => follower.classList.remove('hover'));
+                    
+                    const delBtn = card.querySelector('.delete-msg');
+                    delBtn.addEventListener('mouseenter', () => follower.classList.add('hover'));
+                    delBtn.addEventListener('mouseleave', () => follower.classList.remove('hover'));
+                    
+                    delBtn.onclick = () => {
+                        if(confirm("Delete this message?")) {
+                            remove(ref(db, `messages/${key}`));
+                        }
+                    };
                 });
             });
         }
