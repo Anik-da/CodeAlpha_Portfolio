@@ -282,7 +282,22 @@
     </section>
 
     <!-- Hidden Resume Template for PDF Generation -->
-    <div id="resume-template" style="position:absolute; left:-9999px; top:0;">
+    <style>
+        .resume-pdf-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px;
+            background: #ffffff !important;
+            color: #333333 !important;
+            z-index: -1000;
+        }
+
+        .resume-pdf-container * {
+            color: #333333 !important;
+        }
+    </style>
+    <div id="resume-template" class="resume-pdf-container">
         <div style="padding:40px; font-family:'Inter', sans-serif; color:#333; background:#fff; line-height:1.5;">
             <div style="text-align:center; border-bottom:2px solid #a855f7; padding-bottom:20px; margin-bottom:20px;">
                 <h1 style="font-family:'Orbitron', sans-serif; margin:0; color:#000;">ANIK DAS</h1>
@@ -438,17 +453,34 @@
                     setTimeout(() => {
                         btn.innerHTML = original;
                         btn.style.background = '';
-                        contactForm.reset();
+                        this.reset();
                     }, 3000);
                 }).catch(err => {
                     console.error("Firebase Error:", err);
-                    alert("Failed to send message. Please try again.");
+                    alert("Failed to send message.");
                 });
+            });
+        }
+
+        // Resume Generation Logic
+        const resumeBtn = document.getElementById('generate-resume');
+        if (resumeBtn) {
+            resumeBtn.addEventListener('click', () => {
+                const element = document.getElementById('resume-template');
+                const opt = {
+                    margin: [0.5, 0.5],
+                    filename: 'Anik_Das_Resume.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save();
             });
         }
 
         // Admin Portal Logic
         const trigger = document.getElementById('admin-trigger');
+
         if (trigger) {
             trigger.addEventListener('click', () => {
                 const email = prompt("Admin Access Required\nEnter your email:");
