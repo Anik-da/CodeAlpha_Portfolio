@@ -361,6 +361,25 @@
         </div>
     </footer>
 
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyADkVvQ3Y5hCR3c870wOIyWK9fmSyxbZEs",
+            authDomain: "codealpha-portfolio.firebaseapp.com",
+            projectId: "codealpha-portfolio",
+            storageBucket: "codealpha-portfolio.firebasestorage.app",
+            messagingSenderId: "339948897880",
+            appId: "1:339948897880:web:af8c131db8c286b3ccec2d",
+            measurementId: "G-PGBTPF46MP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
     <script src="script.js"></script>
 </body>
 
