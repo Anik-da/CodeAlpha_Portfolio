@@ -200,10 +200,24 @@ async function fetchGitHubProjects() {
     const username = 'Anik-da';
     
     try {
-        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=12`);
+        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
         const repos = await response.json();
         
         if (!Array.isArray(repos)) throw new Error('Failed to fetch repos');
+
+        // Update Stats Dynamically
+        const repoCountEl = document.getElementById('repo-count');
+        const commitCountEl = document.getElementById('commit-count');
+        
+        if (repoCountEl) repoCountEl.setAttribute('data-count', repos.length);
+        if (commitCountEl) {
+            // Approximate activity score based on stars/watchers/size for visual impact
+            const activityScore = repos.reduce((acc, r) => acc + r.stargazers_count + r.watchers_count + (r.size / 100), 100);
+            commitCountEl.setAttribute('data-count', Math.floor(activityScore));
+        }
+        
+        // Re-trigger counter observation for updated targets
+        counters.forEach(c => counterObserver.observe(c));
 
         // Clear loading state
         projectsGrid.innerHTML = '';
