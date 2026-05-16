@@ -462,33 +462,56 @@
                 }
 
                 // --- Objective ---
-                sectionHeader('OBJECTIVE');
-                const obj = doc.splitTextToSize('Passionate Frontend Developer and AI Enthusiast pursuing BE-CSE (AI & ML) at Sapthagiri NPS University, Bengaluru. Dedicated to creating modern web applications powered by cutting-edge technology. I believe in writing clean, efficient code and constantly pushing the boundaries of what\'s possible on the web.', W - 40);
+                sectionHeader('PROFESSIONAL SUMMARY');
+                const summaryText = 'Highly motivated and results-oriented Frontend Developer and AI Enthusiast pursuing a Bachelor of Engineering in Computer Science (AI & ML) at Sapthagiri NPS University. Demonstrates a strong foundation in building modern, responsive, and user-centric web applications. Proficient in a range of frontend technologies, including HTML5, CSS3, and JavaScript (ES6+), with a growing expertise in integrating cutting-edge AI and ML models into web environments. Proven track record of delivering clean, efficient, and well-documented code. Committed to continuous learning and staying at the forefront of technological advancements. Seeking opportunities to leverage technical skills and creative problem-solving abilities to contribute to innovative projects and drive impactful user experiences.';
+                const obj = doc.splitTextToSize(summaryText, W - 40);
                 doc.text(obj, 20, y);
                 y += obj.length * 5 + 8;
 
                 // --- Skills & Proficiencies ---
                 sectionHeader('TECHNICAL PROFICIENCIES');
                 doc.setFont('helvetica', 'bold');
-                doc.text('Frontend Stack: ', 20, y);
+                doc.text('Frontend Development: ', 20, y);
                 doc.setFont('helvetica', 'normal');
-                doc.text('HTML5, CSS3, JavaScript (ES6+), Modern UI Patterns', 20 + doc.getTextWidth('Frontend Stack: '), y);
+                doc.text('HTML5, CSS3 (Flexbox, Grid), JavaScript (ES6+, DOM Manipulation)', 20 + doc.getTextWidth('Frontend Development: '), y);
                 y += 6;
                 doc.setFont('helvetica', 'bold');
-                doc.text('Frameworks & Cloud: ', 20, y);
+                doc.text('Frameworks & Libraries: ', 20, y);
                 doc.setFont('helvetica', 'normal');
-                doc.text('Firebase (Realtime DB, Hosting), RESTful API Integration', 20 + doc.getTextWidth('Frameworks & Cloud: '), y);
+                doc.text('React.js (Basics), Bootstrap, Tailwind CSS, FontAwesome', 20 + doc.getTextWidth('Frameworks & Libraries: '), y);
                 y += 6;
                 doc.setFont('helvetica', 'bold');
-                doc.text('Programming: ', 20, y);
+                doc.text('Backend & Cloud: ', 20, y);
                 doc.setFont('helvetica', 'normal');
-                doc.text('Python (AI/ML focused), Core Java, Algorithm Development', 20 + doc.getTextWidth('Programming: '), y);
+                doc.text('Firebase (Authentication, Realtime Database, Hosting), Node.js (Basics)', 20 + doc.getTextWidth('Backend & Cloud: '), y);
                 y += 6;
                 doc.setFont('helvetica', 'bold');
-                doc.text('Design & Tools: ', 20, y);
+                doc.text('AI & Machine Learning: ', 20, y);
                 doc.setFont('helvetica', 'normal');
-                doc.text('Git/GitHub, Responsive Web Design, UI/UX Design, Canva', 20 + doc.getTextWidth('Design & Tools: '), y);
+                doc.text('Python (NumPy, Pandas, Scikit-learn), Prompt Engineering, API Integration', 20 + doc.getTextWidth('AI & Machine Learning: '), y);
+                y += 6;
+                doc.setFont('helvetica', 'bold');
+                doc.text('Tools & Version Control: ', 20, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text('Git, GitHub, VS Code, Postman, Vercel, Netlify', 20 + doc.getTextWidth('Tools & Version Control: '), y);
                 y += 10;
+
+                // --- Core Competencies ---
+                sectionHeader('CORE COMPETENCIES');
+                const competencies = [
+                    'Responsive Web Design: Creating seamless experiences across all device sizes.',
+                    'User Interface (UI) Design: Crafting visually appealing and intuitive interfaces.',
+                    'User Experience (UX) Principles: Focusing on usability and user satisfaction.',
+                    'Clean Code Architecture: Writing maintainable, scalable, and efficient code.',
+                    'Problem Solving: Analytical thinking and effective debugging strategies.',
+                    'AI Integration: Implementing AI-driven features to enhance web functionality.'
+                ];
+                competencies.forEach(comp => {
+                    if (y > 275) { doc.addPage(); y = 20; }
+                    doc.text('• ' + comp, 22, y);
+                    y += 6;
+                });
+                y += 4;
 
                 // --- Education ---
                 sectionHeader('EDUCATION');
@@ -506,7 +529,7 @@
                 const certCards = document.querySelectorAll('.cert-card');
                 if (certCards.length > 0) {
                     certCards.forEach(cert => {
-                        if (y > 270) { doc.addPage(); y = 20; }
+                        if (y > 275) { doc.addPage(); y = 20; }
                         const title = cert.querySelector('h3')?.textContent || '';
                         const issuer = cert.querySelector('p')?.textContent || '';
                         const date = cert.querySelector('.cert-date')?.textContent || '';
@@ -516,8 +539,18 @@
                         doc.text(' | ' + issuer + ' (' + date + ')', 20 + doc.getTextWidth('• ' + title), y);
                         y += 6;
                     });
+                } else {
+                    doc.text('Actively pursuing certifications in web development and AI.', 20, y);
+                    y += 6;
                 }
-                y += 4;
+                y += 6;
+
+                // --- Soft Skills ---
+                sectionHeader('SOFT SKILLS');
+                const softSkills = 'Effective Communication, Team Collaboration, Time Management, Adaptability, Fast Learner, Attention to Detail, Creative Thinking, Work Ethic';
+                const softSkillsLines = doc.splitTextToSize(softSkills, W - 40);
+                doc.text(softSkillsLines, 20, y);
+                y += softSkillsLines.length * 5 + 10;
 
 
                 // --- Projects (dynamic from GitHub) ---
