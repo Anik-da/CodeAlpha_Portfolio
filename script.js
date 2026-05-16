@@ -205,15 +205,17 @@ async function fetchGitHubProjects() {
         
         if (!Array.isArray(repos)) throw new Error('Failed to fetch repos');
 
+        // Filter out fork repositories and the profile repo
+        const filteredRepos = repos.filter(repo => !repo.fork && repo.name !== username);
+
         // Update Stats Dynamically
         const repoCountEl = document.getElementById('repo-count');
-        const commitCountEl = document.getElementById('commit-count');
+        const certCountEl = document.getElementById('cert-count');
         
-        if (repoCountEl) repoCountEl.setAttribute('data-count', repos.length);
-        if (commitCountEl) {
-            // Approximate activity score based on stars/watchers/size for visual impact
-            const activityScore = repos.reduce((acc, r) => acc + r.stargazers_count + r.watchers_count + (r.size / 100), 100);
-            commitCountEl.setAttribute('data-count', Math.floor(activityScore));
+        if (repoCountEl) repoCountEl.setAttribute('data-count', filteredRepos.length);
+        if (certCountEl) {
+            const certs = document.querySelectorAll('.cert-card');
+            certCountEl.setAttribute('data-count', certs.length);
         }
         
         // Re-trigger counter observation for updated targets
@@ -221,9 +223,6 @@ async function fetchGitHubProjects() {
 
         // Clear loading state
         projectsGrid.innerHTML = '';
-
-        // Filter out fork repositories and the profile repo
-        const filteredRepos = repos.filter(repo => !repo.fork && repo.name !== username);
 
         filteredRepos.forEach((repo, i) => {
             const card = document.createElement('div');
