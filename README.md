@@ -4,8 +4,9 @@ A highly interactive, modern, and visually striking personal portfolio website f
 
 ## 🌟 Live Demo
 
-The portfolio is deployed and live at:
-**[codealpha-portfolio.web.app](https://codealpha-portfolio.web.app)**
+The portfolio is deployed and accessible at:
+- **Firebase Hosting:** [codealpha-portfolio.web.app](https://codealpha-portfolio.web.app)
+- **GitHub Pages:** [anik-da.github.io/CodeAlpha_Portfolio](https://anik-da.github.io/CodeAlpha_Portfolio/)
 
 ## ✨ Key Features
 
@@ -23,7 +24,7 @@ The portfolio is deployed and live at:
 - **Styling:** Custom CSS with advanced selectors, pseudo-elements, grid/flexbox layouts, and keyframe animations.
 - **Icons:** FontAwesome (v6)
 - **PDF Generation:** html2pdf.js (via CDN)
-- **Backend & Hosting:** Firebase Hosting, Firebase Realtime Database (for the contact form)
+- **Backend & Hosting:** Firebase Hosting, GitHub Pages (via Actions), Firebase Realtime Database (for the contact form)
 - **APIs:** GitHub REST API (Users & Repos endpoints)
 
 ## 📂 Project Structure
@@ -60,9 +61,14 @@ To run the portfolio on your local machine for development:
 
 ## 📦 Deployment
 
-This project uses **Firebase Hosting** for continuous deployment.
+This project uses dual-deployment for high availability:
 
-To deploy manually via the CLI:
+### 1. GitHub Pages (Automated)
+The repository uses a GitHub Actions workflow (`.github/workflows/static.yml`) to automatically build and deploy to GitHub Pages every time code is pushed to the `main` branch. 
+*Note: Ensure "GitHub Actions" is selected as the Source under Settings > Pages.*
+
+### 2. Firebase Hosting (Manual)
+To deploy manually to Firebase via the CLI:
 ```bash
 firebase deploy --only hosting
 ```
