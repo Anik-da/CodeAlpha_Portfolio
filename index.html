@@ -13,7 +13,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
@@ -281,53 +281,7 @@
         </div>
     </section>
 
-    <!-- Hidden Resume Template for PDF Generation -->
-    <style>
-        .resume-pdf-container {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 800px;
-            background-color: #ffffff !important;
-            color: #333333 !important;
-            z-index: -1000;
-        }
 
-        .resume-pdf-container * {
-            color: #333333 !important;
-            background-color: transparent !important;
-        }
-    </style>
-    <div id="resume-template" class="resume-pdf-container" style="background-color: #ffffff; color: #333333;">
-        <div style="padding:40px; background-color: #ffffff; color: #333333; line-height:1.5;">
-            <div style="text-align:center; border-bottom:2px solid #a855f7; padding-bottom:20px; margin-bottom:20px; background-color: #ffffff;">
-                <h1 style="margin:0; color:#000000 !important; font-family: 'Orbitron', sans-serif;">ANIK DAS</h1>
-                <p style="margin:5px 0; color:#666666 !important;">Frontend Developer | BE-CSE (AI & ML)</p>
-                <p style="font-size:0.9rem; color:#888888 !important;">Bengaluru, India | anikda9945@gmail.com</p>
-            </div>
-            
-            <div style="margin-bottom:20px; background-color: #ffffff;">
-                <h3 style="color:#a855f7 !important; border-bottom:1px solid #eeeeee; padding-bottom:5px; font-family: 'Orbitron', sans-serif;">OBJECTIVE</h3>
-                <p style="color:#333333 !important;">Passionate Frontend Developer and AI Enthusiast pursuing BE-CSE (AI & ML) at Sapthagiri NPS University. Dedicated to creating modern web applications powered by cutting-edge technology.</p>
-            </div>
-
-            <div style="margin-bottom:20px; background-color: #ffffff;">
-                <h3 style="color:#a855f7 !important; border-bottom:1px solid #eeeeee; padding-bottom:5px; font-family: 'Orbitron', sans-serif;">SKILLS</h3>
-                <p style="color:#333333 !important;"><strong>Languages:</strong> HTML5, CSS3, JavaScript (ES6+), Python</p>
-                <p style="color:#333333 !important;"><strong>Tools & Tech:</strong> Firebase, Git/GitHub, AI/ML Integrations, Responsive Design</p>
-            </div>
-
-            <div style="margin-bottom:20px; background-color: #ffffff;">
-                <h3 style="color:#a855f7 !important; border-bottom:1px solid #eeeeee; padding-bottom:5px; font-family: 'Orbitron', sans-serif;">EDUCATION</h3>
-                <p style="color:#333333 !important;"><strong>BE-CSE (AI & ML)</strong> - Sapthagiri NPS University, Bengaluru</p>
-            </div>
-
-            <div style="background-color: #ffffff;">
-                <h3 style="color:#a855f7 !important; border-bottom:1px solid #eeeeee; padding-bottom:5px; font-family: 'Orbitron', sans-serif;">PROJECTS</h3>
-                <p style="color:#333333 !important;">Check out my latest work at <span style="color:#a855f7 !important;">codealpha-portfolio.web.app</span> or my GitHub <span style="color:#a855f7 !important;">github.com/Anik-da</span></p>
-            </div>
-        </div>
-    </div>
 
     <!-- Contact Section -->
     <section class="section contact" id="contact">
@@ -463,19 +417,120 @@
             });
         }
 
-        // Resume Generation Logic
-        const resumeBtn = document.getElementById('generate-resume');
-        if (resumeBtn) {
-            resumeBtn.addEventListener('click', () => {
-                const element = document.getElementById('resume-template');
-                const opt = {
-                    margin: [0.5, 0.5],
-                    filename: 'Anik_Das_Resume.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                };
-                html2pdf().set(opt).from(element).save();
+        // Resume Generation Logic (jsPDF - programmatic)
+        const resumeBtn2 = document.getElementById('generate-resume');
+        if (resumeBtn2) {
+            resumeBtn2.addEventListener('click', () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+                const W = doc.internal.pageSize.getWidth();
+                let y = 20;
+
+                // --- Header ---
+                doc.setFontSize(24);
+                doc.setFont('helvetica', 'bold');
+                doc.text('ANIK DAS', W / 2, y, { align: 'center' });
+                y += 8;
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(100);
+                doc.text('Frontend Developer  |  BE-CSE (AI & ML)', W / 2, y, { align: 'center' });
+                y += 6;
+                doc.setFontSize(9);
+                doc.setTextColor(130);
+                doc.text('Bengaluru, India  |  anikda9945@gmail.com  |  github.com/Anik-da', W / 2, y, { align: 'center' });
+                y += 4;
+                doc.setDrawColor(168, 85, 247);
+                doc.setLineWidth(0.5);
+                doc.line(20, y, W - 20, y);
+                y += 10;
+
+                // --- Helper for section headers ---
+                function sectionHeader(title) {
+                    doc.setFontSize(13);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(168, 85, 247);
+                    doc.text(title, 20, y);
+                    y += 2;
+                    doc.setDrawColor(220);
+                    doc.setLineWidth(0.2);
+                    doc.line(20, y, W - 20, y);
+                    y += 6;
+                    doc.setTextColor(50);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(10);
+                }
+
+                // --- Objective ---
+                sectionHeader('OBJECTIVE');
+                const obj = doc.splitTextToSize('Passionate Frontend Developer and AI Enthusiast pursuing BE-CSE (AI & ML) at Sapthagiri NPS University, Bengaluru. Dedicated to creating modern web applications powered by cutting-edge technology. I believe in writing clean, efficient code and constantly pushing the boundaries of what\'s possible on the web.', W - 40);
+                doc.text(obj, 20, y);
+                y += obj.length * 5 + 8;
+
+                // --- Skills ---
+                sectionHeader('SKILLS');
+                doc.setFont('helvetica', 'bold');
+                doc.text('Languages: ', 20, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text('HTML5, CSS3, JavaScript (ES6+), Python', 20 + doc.getTextWidth('Languages: '), y);
+                y += 6;
+                doc.setFont('helvetica', 'bold');
+                doc.text('Frameworks & Tools: ', 20, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text('Firebase, Git/GitHub, REST APIs, Responsive Design', 20 + doc.getTextWidth('Frameworks & Tools: '), y);
+                y += 6;
+                doc.setFont('helvetica', 'bold');
+                doc.text('Interests: ', 20, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text('AI/ML, Web Development, Open Source, UI/UX Design', 20 + doc.getTextWidth('Interests: '), y);
+                y += 12;
+
+                // --- Education ---
+                sectionHeader('EDUCATION');
+                doc.setFont('helvetica', 'bold');
+                doc.text('BE - Computer Science & Engineering (AI & ML)', 20, y);
+                y += 5;
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(100);
+                doc.text('Sapthagiri NPS University, Bengaluru', 20, y);
+                y += 12;
+                doc.setTextColor(50);
+
+                // --- Projects (dynamic from GitHub) ---
+                sectionHeader('PROJECTS');
+                const projCards = document.querySelectorAll('.project-card');
+                if (projCards.length > 0) {
+                    projCards.forEach(card => {
+                        if (y > 270) { doc.addPage(); y = 20; }
+                        const title = card.querySelector('h3')?.textContent || 'Project';
+                        const desc = card.querySelector('p')?.textContent || '';
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(10);
+                        doc.text('• ' + title, 22, y);
+                        y += 5;
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(9);
+                        const lines = doc.splitTextToSize(desc, W - 48);
+                        doc.text(lines, 26, y);
+                        y += lines.length * 4 + 4;
+                    });
+                } else {
+                    doc.text('Visit codealpha-portfolio.web.app or github.com/Anik-da for live projects.', 20, y);
+                    y += 8;
+                }
+
+                // --- Footer ---
+                y += 5;
+                if (y > 270) { doc.addPage(); y = 20; }
+                doc.setDrawColor(168, 85, 247);
+                doc.setLineWidth(0.3);
+                doc.line(20, y, W - 20, y);
+                y += 6;
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text('Generated on ' + new Date().toLocaleDateString() + '  |  codealpha-portfolio.web.app', W / 2, y, { align: 'center' });
+
+                doc.save('Anik_Das_Resume.pdf');
             });
         }
 
