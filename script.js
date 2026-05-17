@@ -251,7 +251,9 @@ async function fetchGitHubProjects() {
                 'SmartVote-India': 'https://election-262a7.web.app',
                 'smart-civic-maintenance': 'https://smart-civic-maintenance.web.app'
             };
-            const liveUrl = repo.homepage || fallbackLinks[repo.name];
+            // Automatic fallback guessing Firebase Hosting URL
+            const autoFirebaseUrl = `https://${repo.name.toLowerCase()}.web.app`;
+            const liveUrl = repo.homepage || fallbackLinks[repo.name] || autoFirebaseUrl;
 
             card.innerHTML = `
                 <div class="project-image">
@@ -283,27 +285,69 @@ async function fetchGitHubProjects() {
     }
 }
 
+let currentProjectLimit = 4;
+let activeProjectFilter = 'all';
+
 function initFiltering() {
     const filterBtns = document.querySelectorAll('.filter-btn');
+    const showMoreBtn = document.getElementById('show-more-projects');
     
+    // Setup Show More button
+    if (showMoreBtn && !showMoreBtn.dataset.initialized) {
+        showMoreBtn.onclick = () => {
+            currentProjectLimit += 4;
+            applyProjectFilter();
+        };
+        showMoreBtn.dataset.initialized = 'true';
+    }
+    
+    // Setup filter buttons
     filterBtns.forEach(btn => {
         btn.onclick = () => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const filter = btn.getAttribute('data-filter');
-            const cards = document.querySelectorAll('.project-card');
-            
-            cards.forEach(card => {
-                const cat = card.getAttribute('data-category');
-                if (filter === 'all' || cat === filter) {
-                    card.classList.remove('hidden');
-                    card.style.animation = 'fadeUp 0.5s ease forwards';
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
+            activeProjectFilter = btn.getAttribute('data-filter');
+            currentProjectLimit = 4; // Reset limit when filter changes
+            applyProjectFilter();
         };
     });
+    
+    // Apply initial filter
+    applyProjectFilter();
+}
+
+function applyProjectFilter() {
+    const cards = document.querySelectorAll('.project-card');
+    const showMoreBtn = document.getElementById('show-more-projects');
+    let visibleCount = 0;
+    let matchCount = 0;
+
+    cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (activeProjectFilter === 'all' || cat === activeProjectFilter) {
+            matchCount++;
+            if (visibleCount < currentProjectLimit) {
+                card.classList.remove('hidden');
+                card.style.animation = 'fadeUp 0.5s ease forwards';
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+
+    // Toggle Show More button visibility
+    if (showMoreBtn) {
+        if (matchCount > currentProjectLimit) {
+            showMoreBtn.style.display = 'inline-block';
+            showMoreBtn.classList.remove('hidden');
+        } else {
+            showMoreBtn.style.display = 'none';
+            showMoreBtn.classList.add('hidden');
+        }
+    }
 }
 
 // Call the fetch function on load
